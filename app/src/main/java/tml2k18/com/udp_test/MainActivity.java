@@ -12,8 +12,10 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     Button b1;
+    int port=5000;
+    String ip="192.168.137.227";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,35 +25,27 @@ public class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                       Tfunc();
+                        try {
+                            int i=8;
+                            DatagramSocket udpSocket = new DatagramSocket(port);
+                            InetAddress serverAddr = InetAddress.getByName(ip);
+                            byte[] buf = String.valueOf(i).getBytes();
+                            DatagramPacket packet = new DatagramPacket(buf, buf.length,serverAddr, port);
+                            udpSocket.send(packet);
+                        } catch (SocketException e) {
+                            Log.e("Udp:", "Socket Error:", e);
+                        } catch (IOException e) {
+                            Log.e("Udp Send:", "IO Error:", e);
+                        }
 
                     }
                 }
         );
 
     }
-    public void Tfunc(){
-        Runnable ru=new Runnable() {
-            @Override
-            public void run() {
-                int port=5000;
-                String ip="192.168.137.227";
-                try {
-                    DatagramSocket udpSocket = new DatagramSocket(port);
-                    InetAddress serverAddr = InetAddress.getByName(ip);
-                    byte[] buf = ("1").getBytes();
-                    DatagramPacket packet = new DatagramPacket(buf, buf.length,serverAddr, port);
-                    udpSocket.send(packet);
-                } catch (SocketException e) {
-                    Log.e("Udp:", "Socket Error:", e);
-                } catch (IOException e) {
-                    Log.e("Udp Send:", "IO Error:", e);
-                }
-            }
-        };
-        Thread abc=new Thread(ru);
-        abc.start();
-    }
+
+
+
 
 
 }
