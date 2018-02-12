@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 int port=5000;
-                String ip="192.168.137.227";
+                String ip="192.168.137.183";
                 try {
                     DatagramSocket udpSocket = new DatagramSocket(port);
                     InetAddress serverAddr = InetAddress.getByName(ip);
