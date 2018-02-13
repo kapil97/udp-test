@@ -4,16 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/and_back"
+    android:background="@drawable/and_back_hl"
     tools:context="tml2k18.com.udp_test.MainActivity">
 
     <EditText
         android:layout_width="160dp"
         android:layout_height="50dp"
         android:id="@+id/txt1"
-
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="50dp"
         android:background="#E0E0E3"
         android:textColor="#312419"
         />

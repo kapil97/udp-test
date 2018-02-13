@@ -1,4 +1,5 @@
 #include <WiFiUdp.h>
+
 #include <ESP8266WiFi.h>
 
 const char* ssid = "Kamli"; //Enter your wifi network SSID
@@ -39,8 +40,9 @@ void setup() {
 }
 
 void loop() {
+  int i,val=0,k=1;
   int noBytes = Udp.parsePacket();
-  String received_command = "";
+ int buff[10];
   if ( noBytes ) 
   {
     Serial.print(millis() / 1000);
@@ -52,10 +54,32 @@ void loop() {
     Serial.println(Udp.remotePort());
 
     Udp.read(packetBuffer,noBytes);
-    Serial.println();
-
-    Serial.println(packetBuffer[0]);
-    incomingByte = packetBuffer[0];
+    //Serial.println();
+    for(i=0;i<noBytes;i++){
+    //Serial.println(packetBuffer[i]);
+    buff[i]=packetBuffer[i]-48;
+    
+    }
+   //  Serial.println("buffer value :");
+    for(i=noBytes-1;i>=0;i--)
+    {
+      //.println(buff[i]);
+      val+=k*buff[i];
+      k=k*10;
+    }
+    Serial.println(val);
+ 
+   /*  for(i=0,j=noBytes;i<noBytes;i++,j--)
+    {
+     rbuff[j]=buff[i];
+    }
+     Serial.println("reverse buffer value :");
+       for(i=0;i<noBytes;i++)
+    {
+      Serial.println(rbuff[i]);
+    }
+    */
+   /* incomingByte = packetBuffer[0];*/
     Serial.println();
   }
   
