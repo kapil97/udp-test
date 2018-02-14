@@ -62,15 +62,37 @@
 
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/lt"
+            android:layout_marginTop="15dp"
+            android:layout_toStartOf="@+id/lt"
+            android:background="@drawable/layfile" />
+
         <Button
+            android:id="@+id/btn1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SEND"
-            android:id="@+id/btn1"
+            android:layout_alignBaseline="@+id/btn2"
+            android:layout_alignBottom="@+id/btn2"
+            android:layout_alignParentEnd="true"
             android:background="@drawable/layfile"
-            android:layout_marginTop="20dp"
-            android:layout_below="@+id/lt"
+            android:text="SEND"
+            android:textColor="#17202A" />
+
+        <Button
+            android:id="@+id/btn2"
+            android:background="@drawable/layfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/txt3"
+            android:layout_marginEnd="25dp"
             android:textColor="#17202A"
-            android:layout_centerHorizontal="true"/>
+            android:layout_toStartOf="@+id/btn1"
+            android:text="Sesnor Value" />
+
     </RelativeLayout>
 </RelativeLayout>
