@@ -25,8 +25,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     TextView t1,t2;
     String ipAdd;
 
-    float sx,sy,sz;
-    int tt;
+    float sx,sy,sz,xt,tt,yt,zt;
+    int rt;
 
     SensorManager sensorManager;
     Sensor accelerometer;
@@ -46,26 +46,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         }
 
-        b1.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ipAdd=t1.getText().toString();
-
-
-                        if(ipAdd.equals("")){
-                         Toast t1=Toast.makeText(MainActivity.this,"Enter valid number plis",Toast.LENGTH_SHORT);
-                         t1.show();
-
-                        }
-                        else {
-
-                            Tfunc(ipAdd,tt);
-                        }
-
-                    }
-                }
-        );
     }
     public void Tfunc(String a,int n){
         final String ip=a;
@@ -97,12 +77,49 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
     @Override
-    public void onSensorChanged(SensorEvent event) {
-        sx= event.values[0];
-        sy= event.values[1];
-        sz= event.values[2];
-        tt= (int) (sx+sy+sz/3);
-        t2.setText(String.valueOf(tt));
+    public void onSensorChanged(final SensorEvent event) {
+        b1.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ipAdd=t1.getText().toString();
+
+
+                        if(ipAdd.equals("")){
+                            Toast t1=Toast.makeText(MainActivity.this,"Enter valid number plis",Toast.LENGTH_SHORT);
+                            t1.show();
+
+                        }
+                        else {
+                            t1.setEnabled(false);
+                            long currt=System.currentTimeMillis();
+
+                            while(System.currentTimeMillis()-currt<=180000) {
+                                long ct = System.currentTimeMillis();
+                                while (System.currentTimeMillis() - ct<=5000) {
+                                    xt += event.values[0];
+                                    yt += event.values[1];
+                                    zt += event.values[2];
+                                }
+
+                                tt=(xt*xt)+(yt*yt)+(zt*zt);
+                                xt=yt=zt=0;
+
+                                rt= (int) Math.sqrt(tt);
+                                rt=rt/100000;
+                                t2.setText(String.valueOf(rt).trim());
+                                Tfunc(ipAdd,rt);
+                                rt=0;
+                                tt=0;
+                            }
+
+                        }
+
+                    }
+                }
+        );
+
+
 
     }
 
