@@ -1,6 +1,11 @@
 package tml2k18.com.udp_test;
 
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,54 +20,52 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
-public class MainActivity extends AppCompatActivity {
-    Button b1,b2;
-    TextView t1,t2,t3;
-    String ipAdd,val1,totalval;
-    int val=0;
-    int tval;
+public class MainActivity extends AppCompatActivity implements SensorEventListener {
+    Button b1;
+    TextView t1,t2;
+    String ipAdd;
+
+    float sx,sy,sz;
+    int tt;
+
+    SensorManager sensorManager;
+    Sensor accelerometer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         b1=findViewById(R.id.btn1);
-        b2=findViewById(R.id.btn2);
         t1=findViewById(R.id.txt1);
+
         t2=findViewById(R.id.txt2);
-        t3=findViewById(R.id.txt3);
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        if(sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) !=null) {
+
+            accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            sensorManager.registerListener(this,accelerometer,SensorManager.SENSOR_DELAY_NORMAL);
+
+        }
+
         b1.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ipAdd=t1.getText().toString();
 
-                        val1=t2.getText().toString().trim();
-                        if((val1.equals(""))){
+
+                        if(ipAdd.equals("")){
                          Toast t1=Toast.makeText(MainActivity.this,"Enter valid number plis",Toast.LENGTH_SHORT);
                          t1.show();
 
                         }
                         else {
-                            val = Integer.parseInt(val1);
-                            Tfunc(ipAdd,val);
+
+                            Tfunc(ipAdd,tt);
                         }
 
                     }
                 }
         );
-        b2.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        totalval=getIntent().getStringExtra("val");
-                        tval=Integer.parseInt(totalval);
-                        Tfunc(ipAdd,tval);
-                        t3.setText(totalval);
-                    }
-                }
-        );
-
-
     }
     public void Tfunc(String a,int n){
         final String ip=a;
@@ -93,6 +96,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        sx= event.values[0];
+        sy= event.values[1];
+        sz= event.values[2];
+        tt= (int) (sx+sy+sz/3);
+        t2.setText(String.valueOf(tt));
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
 }
 
 

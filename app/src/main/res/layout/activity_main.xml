@@ -4,95 +4,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/and"
+    android:background="@drawable/and_back"
     tools:context="tml2k18.com.udp_test.MainActivity">
 
-    <RelativeLayout
-        android:layout_width="300dp"
-        android:layout_centerVertical="true"
+    <TextView
+        android:layout_marginTop="200dp"
+        android:layout_width="160dp"
+        android:layout_height="20dp"
+
+        android:id="@+id/tp1"
+        android:layout_marginBottom="5dp"
         android:layout_centerHorizontal="true"
+        android:text="Enter the ip address here:"/>
+
+<EditText
+    android:layout_width="160dp"
+    android:layout_height="50dp"
+    android:layout_marginBottom="5dp"
+    android:textAlignment="center"
+    android:id="@+id/txt1"
+    android:textColor="#17202A"
+    android:background="@drawable/btnstyle"
+    android:layout_centerHorizontal="true"
+    android:layout_below="@+id/tp1"/>
+    <TextView
+        android:layout_width="160dp"
+        android:layout_marginBottom="5dp"
+        android:layout_height="20dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/tp2"
+
+        android:layout_below="@+id/txt1"
+        android:text="Your Realtime Score"/>
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="5dp"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
+        android:textColor="#17202A"
+        android:id="@+id/txt2"
         android:background="@drawable/btnstyle"
+        android:layout_below="@+id/tp2"/>
 
-        android:layout_height="300dp">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:id="@+id/lt"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="70dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/edit1"
-
-                android:textColor="#17202A  "
-                android:text="Enter the IP Address"
-                android:layout_marginStart="5dp"/>
-            <EditText
-                android:layout_width="160dp"
-                android:layout_height="50dp"
-                android:hint="192.168.137.x"
-                android:layout_marginTop="5dp"
-                android:textAlignment="center"
-                android:textColor="#17202A"
-                android:background="@drawable/fieldfile"
-                android:layout_marginStart="5dp"
-                android:id="@+id/txt1"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/edit2"
-                android:text="Enter Value"
-                android:textColor="#17202A  "
-                android:layout_marginStart="5dp"/>
-            <EditText
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:hint="1"
-                android:layout_marginTop="5dp"
-                android:textAlignment="center"
-                android:textColor="#17202A"
-                android:background="@drawable/fieldfile"
-                android:layout_marginStart="5dp"
-                android:id="@+id/txt2"
-                />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:text="START"
+        android:textColor="#17202A"
+        android:id="@+id/btn1"
+        android:background="@drawable/layfile"
+        android:layout_below="@+id/txt2"
+        />
 
 
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/txt3"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_below="@+id/lt"
-            android:layout_marginTop="15dp"
-            android:layout_toStartOf="@+id/lt"
-            android:background="@drawable/layfile" />
-
-        <Button
-            android:id="@+id/btn1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/btn2"
-            android:layout_alignBottom="@+id/btn2"
-            android:layout_alignParentEnd="true"
-            android:background="@drawable/layfile"
-            android:text="SEND"
-            android:textColor="#17202A" />
-
-        <Button
-            android:id="@+id/btn2"
-            android:background="@drawable/layfile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/txt3"
-            android:layout_marginEnd="25dp"
-            android:textColor="#17202A"
-            android:layout_toStartOf="@+id/btn1"
-            android:text="Sesnor Value" />
-
-    </RelativeLayout>
 </RelativeLayout>
