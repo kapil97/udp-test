@@ -23,10 +23,12 @@ import java.net.SocketException;
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     Button b1;
     TextView t1,t2;
+    long currt;
     String ipAdd;
 
     float sx,sy,sz,xt,tt,yt,zt;
     int rt;
+    int i,temp[] = new int[36];
 
     SensorManager sensorManager;
     Sensor accelerometer;
@@ -34,18 +36,27 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        for (i=0;i<36;i++)
+            temp[i] = 0;
+
         b1=findViewById(R.id.btn1);
         t1=findViewById(R.id.txt1);
 
         t2=findViewById(R.id.txt2);
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        if(sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) !=null) {
 
-            accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-            sensorManager.registerListener(this,accelerometer,SensorManager.SENSOR_DELAY_NORMAL);
-
-        }
-
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currt=System.currentTimeMillis();
+                if(sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) !=null) {
+                    accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+                    sensorManager.registerListener(MainActivity.this,accelerometer,SensorManager.SENSOR_DELAY_NORMAL);
+                    b1.setEnabled(false);
+                }
+            }
+        });
     }
     public void Tfunc(String a,int n){
         final String ip=a;
@@ -78,49 +89,71 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(final SensorEvent event) {
-        b1.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ipAdd=t1.getText().toString();
+        ipAdd=t1.getText().toString();
+        if(ipAdd.equals("")){
+            Toast toast=Toast.makeText(MainActivity.this,"Enter valid number plis",Toast.LENGTH_SHORT);
+            toast.show();
 
+        }
+        else {
 
-                        if(ipAdd.equals("")){
-                            Toast t1=Toast.makeText(MainActivity.this,"Enter valid number plis",Toast.LENGTH_SHORT);
-                            t1.show();
+            for(i=0;i<36;i++) {
+                if ((System.currentTimeMillis() - currt) / 1000 <= (i + 1) * 5 && (System.currentTimeMillis() - currt) / 1000 >= i * 5 && i == 0) {
 
-                        }
-                        else {
-                            t1.setEnabled(false);
-                            long currt=System.currentTimeMillis();
+                    xt = xt + event.values[0];
+                    yt = yt + event.values[1];
+                    zt = zt + event.values[2];
 
-                            while(System.currentTimeMillis()-currt<=180000) {
-                                long ct = System.currentTimeMillis();
-                                while (System.currentTimeMillis() - ct<=5000) {
-                                    xt += event.values[0];
-                                    yt += event.values[1];
-                                    zt += event.values[2];
-                                }
+                    tt = (xt * xt) + (yt * yt) + (zt * zt);
+                    rt = (int) Math.sqrt(tt);
+                    t2.setText(String.valueOf(rt).trim());
 
-                                tt=(xt*xt)+(yt*yt)+(zt*zt);
-                                xt=yt=zt=0;
+                } else if ((System.currentTimeMillis() - currt) / 1000 <= (i + 1) * 5 && (System.currentTimeMillis() - currt) / 1000 >= i * 5) {
 
-                                rt= (int) Math.sqrt(tt);
-                                rt=rt/100000;
-                                t2.setText(String.valueOf(rt).trim());
-                                Tfunc(ipAdd,rt);
-                                rt=0;
-                                tt=0;
-                            }
+                    if (temp[i - 1] == 0) {
+                        xt = 0;
+                        yt = 0;
+                        zt = 0;
+                        temp[i - 1] = 1;
+                        Log.d("Itna Second ka data:", " " + (i - 1));
 
-                        }
+                        Tfunc(ipAdd, rt);
 
                     }
+
+                    xt = xt + event.values[0];
+                    yt = yt + event.values[1];
+                    zt = zt + event.values[2];
+
+                    tt = (xt * xt) + (yt * yt) + (zt * zt);
+                    rt = (int) Math.sqrt(tt);
+                    t2.setText(String.valueOf(rt).trim());
+
+                } else if ((System.currentTimeMillis() - currt) / 1000 >= 180 && temp[35] == 0) {
+
+                    Tfunc(ipAdd, rt);
+                    Log.d("Itna Second ka data:", "35");
+                    temp[35] = 1;
+
                 }
-        );
-
-
-
+            }
+        }
+//        else {
+//            t1.setEnabled(false);
+//            if(System.currentTimeMillis()-currt <= 180000) {
+//               // long ct = System.currentTimeMillis();
+//                if(System.currentTimeMillis() - currt <= 5000) {
+//                    xt += event.values[0];
+//                    yt += event.values[1];
+//                    zt += event.values[2];
+//                }
+//                tt=(xt*xt)+(yt*yt)+(zt*zt);
+//                rt= (int) Math.sqrt(tt);
+//                t2.setText(String.valueOf(rt).trim());
+//                Tfunc(ipAdd,rt);
+//                }
+//
+//        }
     }
 
     @Override

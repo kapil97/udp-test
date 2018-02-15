@@ -2,8 +2,8 @@
 
 #include <ESP8266WiFi.h>
 
-const char* ssid = "Kamli"; //Enter your wifi network SSID
-const char* password ="87654321"; //Enter your wifi network password
+const char* ssid = "tech"; //Enter your wifi network SSID
+const char* password ="12345678"; //Enter your wifi network password
 
 
 const int SERVER_PORT = 5000;
