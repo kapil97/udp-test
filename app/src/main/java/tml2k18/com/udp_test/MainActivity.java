@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     long currt;
     String ipAdd;
 
-    float sx,sy,sz,xt,tt,yt,zt;
+    float xt,yt,zt,axt,ayt,azt;
     int rt;
     int i,temp[] = new int[36];
 
@@ -100,12 +100,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             for(i=0;i<36;i++) {
                 if ((System.currentTimeMillis() - currt) / 1000 <= (i + 1) * 5 && (System.currentTimeMillis() - currt) / 1000 >= i * 5 && i == 0) {
 
-                    xt = xt + event.values[0];
-                    yt = yt + event.values[1];
-                    zt = zt + event.values[2];
-
-                    tt = (xt * xt) + (yt * yt) + (zt * zt);
-                    rt = (int) Math.sqrt(tt);
+                    xt = event.values[0];
+                    axt+=Math.abs(xt);
+                    yt =  event.values[1];
+                    ayt+=Math.abs(yt);
+                    zt =  event.values[2];
+                    azt+=Math.abs(zt);
+                    rt= (int) (axt+ayt+azt);
                     t2.setText(String.valueOf(rt).trim());
 
                 } else if ((System.currentTimeMillis() - currt) / 1000 <= (i + 1) * 5 && (System.currentTimeMillis() - currt) / 1000 >= i * 5) {
@@ -114,6 +115,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         xt = 0;
                         yt = 0;
                         zt = 0;
+                        axt=0;
+                        ayt=0;
+                        azt=0;
                         temp[i - 1] = 1;
                         Log.d("Itna Second ka data:", " " + (i - 1));
 
@@ -121,12 +125,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
                     }
 
-                    xt = xt + event.values[0];
-                    yt = yt + event.values[1];
-                    zt = zt + event.values[2];
-
-                    tt = (xt * xt) + (yt * yt) + (zt * zt);
-                    rt = (int) Math.sqrt(tt);
+                    xt = event.values[0];
+                    axt+=Math.abs(xt);
+                    yt =  event.values[1];
+                    ayt+=Math.abs(yt);
+                    zt =  event.values[2];
+                    azt+=Math.abs(zt);
+                    rt= (int) (axt+ayt+azt);
                     t2.setText(String.valueOf(rt).trim());
 
                 } else if ((System.currentTimeMillis() - currt) / 1000 >= 180 && temp[35] == 0) {
@@ -138,22 +143,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 }
             }
         }
-//        else {
-//            t1.setEnabled(false);
-//            if(System.currentTimeMillis()-currt <= 180000) {
-//               // long ct = System.currentTimeMillis();
-//                if(System.currentTimeMillis() - currt <= 5000) {
-//                    xt += event.values[0];
-//                    yt += event.values[1];
-//                    zt += event.values[2];
-//                }
-//                tt=(xt*xt)+(yt*yt)+(zt*zt);
-//                rt= (int) Math.sqrt(tt);
-//                t2.setText(String.valueOf(rt).trim());
-//                Tfunc(ipAdd,rt);
-//                }
-//
-//        }
     }
 
     @Override
