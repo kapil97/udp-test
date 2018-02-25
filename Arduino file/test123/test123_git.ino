@@ -5,14 +5,14 @@
 const char* ssid = "tech"; //Enter your wifi network SSID
 const char* password ="12345678"; //Enter your wifi network password
 
- int SERVER_PORT;
+int SERVER_PORT=5000;
+
 const int BAUD_RATE = 115200;
 byte incomingByte=0;
 byte packetBuffer[512];
 
 WiFiUDP Udp;
 IPAddress ip;
-
 void connectWifi() {
   Serial.println();
   Serial.println();
@@ -25,6 +25,7 @@ void connectWifi() {
   }
   Serial.println("WiFi connected");
   Udp.begin(SERVER_PORT);
+  
   ip = WiFi.localIP();
   Serial.println(ip);
 }
@@ -54,7 +55,6 @@ void movebot(int dir)
 
 void loop() 
 {
- 
     int i,val=0,k=1;
     int dir;
     int noBytes = Udp.parsePacket();
@@ -68,29 +68,29 @@ void loop()
             Serial.print(Udp.remoteIP());
             Serial.print(":");
             Serial.println(Udp.remotePort());
-            if(Udp.remotePort()==5000)
-            {
-              Udp.read(packetBuffer,noBytes);
+            Udp.read(packetBuffer,noBytes);
+              
               for(i=0;i<noBytes;i++)
                 buff[i]=packetBuffer[i]-48;
+              
               for(i=noBytes-1;i>=0;i--)
               {
                 val+=k*buff[i];
                  k=k*10;
               }
-            Serial.println(val);
-            Serial.println();
-           }
-           else
-           if(Udp.remotePort()==3000)
-           {
-              Udp.read(packetBuffer,noBytes);
-                for(i=0;i<noBytes;i++)
-                {
-                  dir=packetBuffer[i];
-                  movebot(dir);
-                }
-           }
-          
-      }
+              
+              if(val>0)
+              {
+                Serial.println(val);
+                Serial.println();
+              }
+              
+              else
+              {
+                val=val+48;
+                Serial.println(val);
+                Serial.println(); 
+              }
+
+          }
 }
