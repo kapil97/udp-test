@@ -33,17 +33,62 @@ void connectWifi() {
 
 void setup() {
    Serial.begin(BAUD_RATE);
-  pinMode(D0,OUTPUT);
-  pinMode(D1,OUTPUT);
-  pinMode(D2,OUTPUT);
-  pinMode(D3,OUTPUT);
-  connectWifi();
+   pinMode(D0,OUTPUT);
+   pinMode(D1,OUTPUT);
+   pinMode(D2,OUTPUT);
+   pinMode(D3,OUTPUT);
+   connectWifi();
+}
+
+void motorhigh(){
+   pinMode(D0,HIGH);
+   pinMode(D1,HIGH);
+   pinMode(D2,HIGH);
+   pinMode(D3,HIGH);
+}
+void motorlow(){
+   pinMode(D0,LOW);
+   pinMode(D1,LOW);
+   pinMode(D2,LOW);
+   pinMode(D3,LOW);
+
+}
+
+void threshold(int value)
+{
+  if(value>3500&& value<=4500)
+  {
+    motorhigh();
+    delay(3000);
+    motorlow();
+  }
+  
+  else if(value>4500&& value<=5500)\
+  {
+    motorhigh();
+    delay(5000);
+    motorlow();
+  }
+  else if(value>=5500)
+  {
+    motorhigh();
+    delay(7000);
+    motorlow();
+  }
+  else if(value<=3500)
+  {
+    motorhigh();
+    delay(2000);
+    motorlow();
+  }
 }
 
 void movebot(int dir)
 {
   if(dir==1)
   {
+
+    
     Serial.println("Left Move Kia");
   }
   else if(dir==2)
@@ -81,6 +126,7 @@ void loop()
               
               if(val>0)
               {
+                threshold(val);
                 Serial.println(val);
                 Serial.println();
               }
@@ -88,6 +134,7 @@ void loop()
               else
               {
                 val=val+48;
+                movebot(val);
                 Serial.println(val);
                 Serial.println(); 
               }

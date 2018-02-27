@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     Button b1;
     TextView t1,t2;
     long currt;
+    Boolean tst=true;
     String ipAdd;
 
     float xt,yt,zt,axt,ayt,azt;
@@ -90,9 +91,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onSensorChanged(final SensorEvent event) {
         ipAdd=t1.getText().toString();
-        if(ipAdd.equals("")){
+        if(ipAdd.equals("")&&(tst)){
             Toast toast=Toast.makeText(MainActivity.this,"Enter valid number plis",Toast.LENGTH_SHORT);
             toast.show();
+            tst=false;
 
         }
         else {

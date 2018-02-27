@@ -26,7 +26,6 @@ void connectWifi()
   }
   Serial.println("WiFi connected");
   Udp.begin(SERVER_PORT);
-  
   ip1 = WiFi.localIP();
   Serial.println("This Device IP Address is:");
   Serial.print(ip1);
@@ -38,19 +37,37 @@ void connectWifi()
 void setup() 
 {
   Serial.begin(BAUD_RATE);
-  pinMode(D0,INPUT);
-  pinMode(D1,INPUT);
+  pinMode(D3,INPUT_PULLUP);
+  pinMode(D4,INPUT_PULLUP);
   connectWifi();
-  Udp.beginPacket(ip,SERVER_PORT);
+  //Udp.beginPacket(ip,SERVER_PORT);
 }
 
 void loop()
 {
+  packetBuffer[0]=0;
   Udp.beginPacket(ip,SERVER_PORT);
+  
+  if(digitalRead(D3)==LOW)
+  {
   packetBuffer[0]=1;
-  delay(2000);
+  Serial.println("D0 pressed");
+  }
+  
+  else if(digitalRead(D4)==LOW)
+  {
+   packetBuffer[0]=2;
+   Serial.println("D1 pressed");
+  }
+  
+  else
+  {
+    Serial.println("NO BUTTON PRESSED");
+  }
+  
   Udp.write(packetBuffer,1);
   Serial.print(packetBuffer[0]);  
   Serial.println();
+  delay(2000);
   Udp.endPacket();
 }
