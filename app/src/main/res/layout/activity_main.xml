@@ -8,14 +8,13 @@
     tools:context="tml2k18.com.udp_test.MainActivity">
 
     <TextView
-        android:layout_marginTop="200dp"
+        android:id="@+id/tp1"
         android:layout_width="160dp"
         android:layout_height="20dp"
-
-        android:id="@+id/tp1"
-        android:layout_marginBottom="5dp"
-        android:layout_centerHorizontal="true"
-        android:text="Enter the ip address here:"/>
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/txt1"
+        android:layout_marginTop="203dp"
+        android:text="Enter the ip address here:" />
 
 <EditText
     android:layout_width="160dp"
@@ -49,15 +48,25 @@
         android:layout_below="@+id/tp2"/>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_height="wrap_content"
-        android:text="START"
-        android:textColor="#17202A"
         android:id="@+id/btn1"
-        android:background="@drawable/layfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/txt2"
-        />
+        android:background="@drawable/layfile"
+        android:text="START"
+        android:layout_centerHorizontal="true"
+        android:textColor="#17202A" />
 
+    <Button
+        android:id="@+id/btn2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn1"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="5dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/layfile"
+        android:text="RESET"
+        android:textColor="#17202A" />
 
 </RelativeLayout>

@@ -21,7 +21,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
-    Button b1;
+    Button b1,b2;
     TextView t1,t2;
     long currt;
     Boolean tst=true;
@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             temp[i] = 0;
 
         b1=findViewById(R.id.btn1);
+        b2=findViewById(R.id.btn2);
         t1=findViewById(R.id.txt1);
 
         t2=findViewById(R.id.txt2);
@@ -50,14 +51,32 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currt=System.currentTimeMillis();
-                if(sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) !=null) {
+
+
+                    currt=System.currentTimeMillis();
+                    if(sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) !=null) {
                     accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
                     sensorManager.registerListener(MainActivity.this,accelerometer,SensorManager.SENSOR_DELAY_NORMAL);
                     b1.setEnabled(false);
+                    t1.setEnabled(false);
+
+
                 }
             }
         });
+        b2.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = getBaseContext().getPackageManager()
+                                .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(i);
+                        sensorManager.unregisterListener(MainActivity.this);
+
+                    }
+                }
+        );
     }
     public void Tfunc(String a,int n){
         final String ip=a;
@@ -91,11 +110,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onSensorChanged(final SensorEvent event) {
         ipAdd=t1.getText().toString();
-        if(ipAdd.equals("")&&(tst)){
-            Toast toast=Toast.makeText(MainActivity.this,"Enter valid number plis",Toast.LENGTH_SHORT);
+        if((tst)&&(ipAdd.equals(""))){
+            Toast toast=Toast.makeText(MainActivity.this,"Enter Valid ip Address",Toast.LENGTH_SHORT);
             toast.show();
             tst=false;
-
         }
         else {
 

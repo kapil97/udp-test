@@ -1,8 +1,12 @@
 #include <WiFiUdp.h>
-
 #include <ESP8266WiFi.h>
+//agar slow ho rha hai to ye serial prints sab nikal do from void loop
+int rightMotor2 = 0;    //  - right Motor -
+int rightMotor1 = 4;    //  - right Motor +*/
+int leftMotor2 =  5;    //  - left Motor - 
+int leftMotor1 = 16;    //  - left Motor +
 
-const char* ssid = "tech"; //Enter your wifi network SSID
+const char* ssid = "Oneplus"; //Enter your wifi network SSID
 const char* password ="12345678"; //Enter your wifi network password
 
 int SERVER_PORT=5000;
@@ -10,6 +14,7 @@ int SERVER_PORT=5000;
 const int BAUD_RATE = 115200;
 byte incomingByte=0;
 byte packetBuffer[512];
+
 
 WiFiUDP Udp;
 IPAddress ip;
@@ -33,53 +38,84 @@ void connectWifi() {
 
 void setup() {
    Serial.begin(BAUD_RATE);
-   pinMode(D0,OUTPUT);
-   pinMode(D1,OUTPUT);
-   pinMode(D2,OUTPUT);
-   pinMode(D3,OUTPUT);
-   connectWifi();
+  pinMode(leftMotor1, OUTPUT); 
+  pinMode(leftMotor2, OUTPUT);  
+  pinMode(rightMotor1, OUTPUT);  
+  pinMode(rightMotor2, OUTPUT);  
+  /*digitalWrite(leftMotor1,LOW);
+  digitalWrite(leftMotor2,LOW);
+  digitalWrite(rightMotor1,LOW);
+  digitalWrite(rightMotor2,LOW);
+   */connectWifi();
 }
 
-void motorhigh(){
-   pinMode(D0,HIGH);
-   pinMode(D1,HIGH);
-   pinMode(D2,HIGH);
-   pinMode(D3,HIGH);
+void moveForwards() {
+  Serial.println("Forward");
+  analogWrite(leftMotor1,512);
+  analogWrite(leftMotor2,0);
+  analogWrite(rightMotor1,512);
+  analogWrite(rightMotor2,0);
 }
-void motorlow(){
-   pinMode(D0,LOW);
-   pinMode(D1,LOW);
-   pinMode(D2,LOW);
-   pinMode(D3,LOW);
 
+
+void moveBackwards() {
+  Serial.println("Backwards");
+  analogWrite(leftMotor1,0);
+  analogWrite(leftMotor2,512);
+  analogWrite(rightMotor1,0);
+  analogWrite(rightMotor2,512);
+}
+
+void turnRight() {
+  Serial.println("Hard Right");
+  analogWrite(leftMotor1,512);
+  analogWrite(leftMotor2,0);
+  analogWrite(rightMotor1,0);
+  analogWrite(rightMotor2,512);
+}
+
+void turnLeft() {
+  Serial.println("Hard Left");
+  analogWrite(leftMotor1,0);
+  analogWrite(leftMotor2,512);
+  analogWrite(rightMotor1,512);
+  analogWrite(rightMotor2,0);
+}
+
+void resetEngine() {
+  Serial.println("reset e");
+  analogWrite(leftMotor1,0);
+  analogWrite(leftMotor2,0);
+  analogWrite(rightMotor1,0);
+  analogWrite(rightMotor2,0);
 }
 
 void threshold(int value)
 {
   if(value>3500&& value<=4500)
   {
-    motorhigh();
-    delay(3000);
-    motorlow();
+    moveForwards();
+    delay(1000);
+    resetEngine();
   }
   
   else if(value>4500&& value<=5500)\
   {
-    motorhigh();
-    delay(5000);
-    motorlow();
+    moveForwards();
+    delay(2000);
+    resetEngine();
   }
   else if(value>=5500)
   {
-    motorhigh();
-    delay(7000);
-    motorlow();
+   moveForwards();
+    delay(3000);
+    resetEngine();
   }
   else if(value<=3500)
   {
-    motorhigh();
-    delay(2000);
-    motorlow();
+    moveForwards();
+    delay(500);
+    resetEngine();
   }
 }
 
@@ -87,12 +123,12 @@ void movebot(int dir)
 {
   if(dir==1)
   {
-
-    
+     turnLeft();
     Serial.println("Left Move Kia");
   }
   else if(dir==2)
   {
+    turnRight();
     Serial.println("Right Move Kia");
   }
 }
@@ -127,6 +163,7 @@ void loop()
               if(val>0)
               {
                 threshold(val);
+                Serial.println("Value from App");
                 Serial.println(val);
                 Serial.println();
               }
@@ -135,6 +172,7 @@ void loop()
               {
                 val=val+48;
                 movebot(val);
+                Serial.println("Val from Board");
                 Serial.println(val);
                 Serial.println(); 
               }
