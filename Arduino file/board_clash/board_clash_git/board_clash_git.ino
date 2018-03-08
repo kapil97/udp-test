@@ -1,8 +1,8 @@
 #include <WiFiUdp.h>
 #include <ESP8266WiFi.h>
 
-const char* ssid = "tech"; //Enter your wifi network SSID
-const char* password ="12345678"; //Enter your wifi network password
+const char* ssid = "cd"; //Enter your wifi network SSID
+const char* password ="nivedita"; //Enter your wifi network password
 
 const int SERVER_PORT=5000;
 const int BAUD_RATE = 115200;
@@ -10,7 +10,7 @@ int i;
 byte packetBuffer[1]={0};
 
 WiFiUDP Udp;
-IPAddress ip(192,168,43,54);
+IPAddress ip(192,168,43,129);
 IPAddress ip1;
 
 void connectWifi() 
@@ -27,10 +27,13 @@ void connectWifi()
   Serial.println("WiFi connected");
   Udp.begin(SERVER_PORT);
   ip1 = WiFi.localIP();
+  Serial.println("WiFi connected");
   Serial.println("This Device IP Address is:");
   Serial.print(ip1);
   Serial.println("Connected to:");
   Serial.println(ip);
+  
+   
 }
 
 
@@ -51,23 +54,23 @@ void loop()
   if(digitalRead(D3)==LOW)
   {
   packetBuffer[0]=1;
-  Serial.println("D0 pressed");
+  Serial.println("D3 pressed");
   }
   
   else if(digitalRead(D4)==LOW)
   {
    packetBuffer[0]=2;
-   Serial.println("D1 pressed");
+   Serial.println("D4 pressed");
+  }
+  else 
+  { packetBuffer[0]=0;
+    Serial.println("No Value");
   }
   
-  else
-  {
-    Serial.println("NO BUTTON PRESSED");
-  }
   
   Udp.write(packetBuffer,1);
   Serial.print(packetBuffer[0]);  
   Serial.println();
-  delay(2000);
+  delay(150);
   Udp.endPacket();
 }
