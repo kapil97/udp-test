@@ -21,8 +21,8 @@ import java.net.InetAddress;
 import java.net.SocketException;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
-    Button b1,b2;
-    TextView t1,t2;
+    private Button b1,b2;
+    private TextView t1,t2;
     long currt;
     Boolean tst=true;
     String ipAdd;
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
+        //code when accuracy of the sensor is changed
     }
 }
 
